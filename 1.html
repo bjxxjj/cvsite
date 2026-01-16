@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>张三 · 个人简历</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="张三 · 个人简历 / 个人网站" />
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-soft: #0b1020;
+      --card: #111827;
+      --accent: #6366f1;
+      --accent-soft: rgba(99,102,241,0.12);
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --border-subtle: rgba(148,163,184,0.25);
+      --radius-xl: 18px;
+      --shadow-soft: 0 18px 45px rgba(15,23,42,0.85);
+      --transition-fast: 0.2s ease-out;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+        sans-serif;
+      background: radial-gradient(circle at top, #1f2937 0, #020617 40%, #020318 100%);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 20px 18px 60px;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(to bottom, rgba(2,6,23,0.95), rgba(2,6,23,0.65));
+      border-bottom: 1px solid rgba(148,163,184,0.25);
+    }
+
+    .nav-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #fbbf24, #f97316 45%, #4f46e5 90%);
+      box-shadow: 0 0 0 2px rgba(15,23,42,0.8), 0 0 0 5px rgba(129,140,248,0.25);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-name {
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      font-size: 15px;
+    }
+
+    .brand-title {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .nav-links a {
+      padding: 6px 10px;
+      border-radius: 999px;
+      transition: background var(--transition-fast), color var(--transition-fast),
+        transform 0.1s ease-out;
+    }
+
+    .nav-links a:hover {
+      background: rgba(148,163,184,0.12);
+      color: #e5e7eb;
+      transform: translateY(-1px);
+    }
+
+    .nav-highlight {
+      background: var(--accent-soft);
+      color: #e5e7eb;
+      border: 1px solid rgba(129,140,248,0.55);
+    }
+
+    main {
+      margin-top: 30px;
+    }
+
+    /* Hero */
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 32px;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .hero-text-overline {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .hero-text-overline::before {
+      content: "";
+      width: 18px;
+      height: 1px;
+      background: linear-gradient(to right, rgba(99,102,241,0), rgba(99,102,241,0.9));
+    }
+
+    .hero-title {
+      font-size: clamp(28px, 4vw, 36px);
+      line-height: 1.25;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .hero-title span {
+      background: linear-gradient(to right, #e5e7eb, #a5b4fc);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .badge {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.35);
+      color: var(--text-muted);
+      background: rgba(15,23,42,0.8);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34,197,94,0.12);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      font-size: 13px;
+      padding: 9px 16px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.12s ease-out, box-shadow var(--transition-fast),
+        background var(--transition-fast), border-color var(--transition-fast),
+        color var(--transition-fast);
+      background: transparent;
+      color: var(--text-main);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #4f46e5, #6366f1, #a855f7);
+      box-shadow: 0 16px 35px rgba(79,70,229,0.45);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px) translateZ(0);
+      box-shadow: 0 20px 45px rgba(79,70,229,0.65);
+    }
+
+    .btn-outline {
+      border-color: rgba(148,163,184,0.6);
+      background: rgba(15,23,42,0.9);
+      color: var(--text-muted);
+    }
+
+    .btn-outline:hover {
+      background: rgba(30,64,175,0.35);
+      color: #e5e7eb;
+      transform: translateY(-1px);
+      border-color: rgba(129,140,248,0.8);
+    }
+
+    .btn-icon {
+      font-size: 14px;
+      transform: translateY(0);
+      transition: transform 0.12s ease-out;
+    }
+
+    .btn:hover .btn-icon {
+      transform: translateX(2px);
+    }
+
+    .hero-right {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+
+    .hero-card {
+      position: relative;
+      width: 100%;
+      max-width: 340px;
+      padding: 18px 18px 16px;
+      border-radius: 26px;
+      background: radial-gradient(circle at top, #1f2937 0, #020617 52%);
+      border: 1px solid rgba(148,163,184,0.28);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .hero-card-glow {
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(circle at 0 0, rgba(56,189,248,0.28), transparent 60%),
+        radial-gradient(circle at 100% 0, rgba(129,140,248,0.35), transparent 60%);
+      opacity: 0.85;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    .hero-card-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .hero-card-name {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .hero-card-role {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .hero-card-dot-row {
+      display: flex;
+      gap: 6px;
+    }
+
+    .hero-card-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(148,163,184,0.5);
+    }
+
+    .hero-card-main {
+      display: grid;
+      grid-template-columns: 84px minmax(0, 1fr);
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .hero-avatar-lg {
+      width: 84px;
+      height: 84px;
+      border-radius: 24px;
+      background: radial-gradient(circle at 30% 20%, #fbbf24, #f97316 45%, #4f46e5 90%);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 12px 35px rgba(15,23,42,0.85);
+    }
+
+    .hero-avatar-lg::after {
+      content: "ZS";
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 20px;
+      color: rgba(15,23,42,0.85);
+      padding-bottom: 10px;
+      letter-spacing: 0.08em;
+    }
+
+    .hero-card-info-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .hero-card-pill {
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.8);
+      border: 1px solid rgba(148,163,184,0.28);
+    }
+
+    .hero-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .hero-card-footer span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-card-footer-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34,197,94,0.15);
+    }
+
+    .hero-card-footer-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Sections */
+
+    section {
+      margin-bottom: 36px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      gap: 10px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title span.bar {
+      width: 26px;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(to right, #6366f1, #a855f7);
+    }
+
+    .section-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(15,23,42,0.9), #020617 60%);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-subtle);
+      padding: 16px 16px 14px;
+      box-shadow: 0 16px 40px rgba(15,23,42,0.9);
+    }
+
+    /* About */
+
+    .about-content {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 18px;
+    }
+
+    .about-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    .about-text p + p {
+      margin-top: 10px;
+    }
+
+    .about-meta {
+      font-size: 12px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .meta-item {
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(30,64,175,0.6);
+      background: rgba(15,23,42,0.85);
+    }
+
+    .meta-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .meta-value {
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    /* Skills */
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      font-size: 12px;
+    }
+
+    .skill-pill {
+      padding: 7px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.4);
+      background: rgba(15,23,42,0.9);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .skill-name {
+      color: #e5e7eb;
+    }
+
+    .skill-level {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .skill-bar {
+      width: 100%;
+      height: 3px;
+      border-radius: 999px;
+      background: rgba(30,64,175,0.8);
+      margin-top: 5px;
+      overflow: hidden;
+    }
+
+    .skill-bar-inner {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(to right, #6366f1, #22c55e);
+      transform-origin: left;
+    }
+
+    /* Experience & Projects */
+
+    .two-column {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 12px;
+    }
+
+    .timeline-item {
+      padding: 10px 11px;
+      border-radius: 14px;
+      border: 1px solid rgba(148,163,184,0.4);
+      background: rgba(15,23,42,0.9);
+    }
+
+    .timeline-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .timeline-role {
+      font-weight: 500;
+      font-size: 13px;
+    }
+
+    .timeline-company {
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+
+    .timeline-time {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .timeline-tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .mini-tag {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,0.8);
+      color: var(--text-muted);
+      background: rgba(15,23,42,0.9);
+    }
+
+    .timeline-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      line-height: 1.6;
+    }
+
+    .projects-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 12px;
+    }
+
+    .project-item {
+      padding: 10px 11px;
+      border-radius: 14px;
+      border: 1px solid rgba(148,163,184,0.4);
+      background: radial-gradient(circle at top, rgba(30,64,175,0.7), rgba(15,23,42,0.98));
+      transition: transform 0.14s ease-out, box-shadow var(--transition-fast),
+        border-color var(--transition-fast), background 0.18s ease-out;
+      cursor: pointer;
+    }
+
+    .project-item:hover {
+      transform: translateY(-2px) translateZ(0);
+      box-shadow: 0 16px 38px rgba(30,64,175,0.75);
+      border-color: rgba(129,140,248,0.9);
+      background: radial-gradient(circle at top, rgba(79,70,229,0.8), rgba(15,23,42,0.98));
+    }
+
+    .project-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: baseline;
+      margin-bottom: 3px;
+    }
+
+    .project-name {
+      font-weight: 500;
+      font-size: 13px;
+    }
+
+    .project-link {
+      font-size: 11px;
+      color: #a5b4fc;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .project-desc {
+      font-size: 12px;
+      color: #e5e7eb;
+      line-height: 1.6;
+      margin-bottom: 4px;
+    }
+
+    /* Contact */
+
+    .contact-body {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 14px;
+      font-size: 12px;
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 6px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 8px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.32);
+    }
+
+    .contact-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      width: 52px;
+      flex-shrink: 0;
+    }
+
+    .contact-value {
+      font-size: 12px;
+    }
+
+    .contact-social {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .social-pill {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.5);
+      background: rgba(15,23,42,0.9);
+      font-size: 12px;
+      color: #e5e7eb;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background var(--transition-fast), transform 0.12s ease-out,
+        box-shadow var(--transition-fast), border-color var(--transition-fast);
+    }
+
+    .social-pill:hover {
+      background: rgba(30,64,175,0.7);
+      transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(30,64,175,0.65);
+      border-color: rgba(129,140,248,0.9);
+    }
+
+    footer {
+      margin-top: 20px;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* Responsive */
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .hero-right {
+        order: -1;
+      }
+      .about-content,
+      .two-column,
+      .contact-grid,
+      .skills-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-inner {
+        padding-inline: 14px;
+      }
+      .nav-links {
+        display: none;
+      }
+      .page {
+        padding-inline: 14px;
+      }
+      .card {
+        padding-inline: 14px;
+      }
+      .hero-card {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="brand-avatar"></div>
+        <div class="brand-text">
+          <div class="brand-name">张三</div>
+          <div class="brand-title">前端工程师 · 个人主页</div>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="#about">关于我</a>
+        <a href="#skills">技能</a>
+        <a href="#experience">经历</a>
+        <a href="#projects">项目</a>
+        <a class="nav-highlight" href="#contact">联系我</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="page">
+    <main>
+      <!-- Hero -->
+      <section class="hero">
+        <div>
+          <div class="hero-text-overline">PORTFOLIO · 简历</div>
+          <h1 class="hero-title">
+            你好，我是 <span>张三</span>，<br />
+            一名注重体验的前端工程师。
+          </h1>
+          <p class="hero-subtitle">
+            专注于 Web 体验设计与前端开发，擅长将抽象的想法变成优雅、好用、稳定的产品界面。
+            目前主要使用 React / TypeScript / Node.js。
+          </p>
+          <div class="hero-meta">
+            <div class="badge">
+              <span class="badge-dot"></span> 可远程 · 坐标：上海
+            </div>
+            <div class="badge">3+ 年前端开发经验</div>
+            <div class="badge">对交互与视觉有强迫症</div>
+          </div>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#contact">
+              联系我
+              <span class="btn-icon">→</span>
+            </a>
+            <a class="btn btn-outline" href="mailto:your@email.com">
+              下载 / 索取 PDF 简历
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="hero-card">
+            <div class="hero-card-glow"></div>
+            <div class="hero-card-inner">
+              <div class="hero-card-top">
+                <div>
+                  <div class="hero-card-name">张三</div>
+                  <div class="hero-card-role">前端工程师 · Web Developer</div>
+                </div>
+                <div class="hero-card-dot-row">
+                  <span class="hero-card-dot"></span>
+                  <span class="hero-card-dot"></span>
+                  <span class="hero-card-dot"></span>
+                </div>
+              </div>
+
+              <div class="hero-card-main">
+                <div class="hero-avatar-lg"></div>
+                <div>
+                  <div class="hero-card-info-row">
+                    <div class="hero-card-pill">React · Vue</div>
+                    <div class="hero-card-pill">TypeScript</div>
+                    <div class="hero-card-pill">Node.js · Express</div>
+                  </div>
+                  <div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">
+                    擅长从 0 到 1 搭建前端工程体系、组件库与设计落地，追求细节与性能的平衡。
+                  </div>
+                </div>
+              </div>
+
+              <div class="hero-card-footer">
+                <span>
+                  <span class="hero-card-footer-dot"></span>
+                  接受全职 / 远程合作
+                </span>
+                <div class="hero-card-footer-tags">
+                  <span>中英文工作环境</span>
+                  <span>开放学习者</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- About -->
+      <section id="about">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="bar"></span>
+            关于我
+          </h2>
+          <div class="section-subtitle">A little bit of background</div>
+        </div>
+        <div class="card">
+          <div class="about-content">
+            <div class="about-text">
+              <p>
+                我是一名来自上海的前端工程师，拥有 3 年以上互联网行业经验，曾在
+                ToB SaaS 和 ToC 产品团队工作。
+              </p>
+              <p>
+                工作中我习惯从用户视角出发，先理解业务和场景，再选择合适的技术方案。
+                我热爱拆解交互细节、微动画与信息层级，让页面既好看也好用。
+              </p>
+              <p>
+                业余时间会学习设计、阅读前端技术文章，也会在 GitHub 上维护一些小项目。
+              </p>
+            </div>
+            <div class="about-meta">
+              <div class="meta-item">
+                <div class="meta-label">现居城市</div>
+                <div class="meta-value">上海 · 可接受远程</div>
+              </div>
+              <div class="meta-item">
+                <div class="meta-label">工作年限</div>
+                <div class="meta-value">3 年前端开发</div>
+              </div>
+              <div class="meta-item">
+                <div class="meta-label">学历</div>
+                <div class="meta-value">计算机相关本科</div>
+              </div>
+              <div class="meta-item">
+                <div class="meta-label">期望方向</div>
+                <div class="meta-value">Web 前端 / 前端工程化</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills -->
+      <section id="skills">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="bar"></span>
+            技能栈
+          </h2>
+          <div class="section-subtitle">What I work with</div>
+        </div>
+        <div class="card">
+          <div class="skills-grid">
+            <!-- 前端基础 -->
+            <div>
+              <div class="skill-pill">
+                <span class="skill-name">HTML / CSS / JS</span>
+                <span class="skill-level">熟练</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-bar-inner" style="width: 90%;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="skill-pill">
+                <span class="skill-name">TypeScript</span>
+                <span class="skill-level">熟练</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-bar-inner" style="width: 85%;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="skill-pill">
+                <span class="skill-name">React / Vue</span>
+                <span class="skill-level">熟练</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-bar-inner" style="width: 88%;"></div>
+              </div>
+            </div>
+
+            <!-- 工程化 -->
+            <div>
+              <div class="skill-pill">
+                <span class="skill-name">Webpack / Vite</span>
+                <span class="skill-level">熟悉</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-bar-inner" style="width: 78%;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="skill-pill">
+                <span class="skill-name">Git / CI/CD</span>
+                <span class="skill-level">熟悉</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-bar-inner" style="width: 80%;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="skill-pill">
+                <span class="skill-name">Node.js / API</span>
+                <span class="skill-level">了解</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-bar-inner" style="width: 65%;"></div>
+              </div>
+            </div>
+
+            <!-- 设计 & 软实力 -->
+            <div>
+              <div class="skill-pill">
+                <span class="skill-name">UI / UX 基础</span>
+                <span class="skill-level">了解</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-bar-inner" style="width: 70%;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="skill-pill">
+                <span class="skill-name">沟通 & 协作</span>
+                <span class="skill-level">良好</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-bar-inner" style="width: 82%;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="skill-pill">
+                <span class="skill-name">英文阅读</span>
+                <span class="skill-level">可工作</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-bar-inner" style="width: 75%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Experience & Projects -->
+      <section id="experience">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="bar"></span>
+            工作经历 & 项目
+          </h2>
+          <div class="section-subtitle">Experience & Projects</div>
+        </div>
+
+        <div class="two-column">
+          <!-- Experience -->
+          <div class="card">
+            <div class="section-subtitle" style="margin-bottom: 10px;">工作经历</div>
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-top">
+                  <div>
+                    <div class="timeline-role">前端工程师</div>
+                    <div class="timeline-company">某某科技 · SaaS 产品线</div>
+                  </div>
+                  <div class="timeline-time">2022.03 - 至今</div>
+                </div>
+                <div class="timeline-desc">
+                  负责核心管理后台与组件库开发，参与设计系统搭建与前端工程化优化，推动前端性能与体验持续改进。
+                </div>
+                <div class="timeline-tag-row">
+                  <span class="mini-tag">React</span>
+                  <span class="mini-tag">TypeScript</span>
+                  <span class="mini-tag">Design System</span>
+                </div>
+              </div>
+
+              <div class="timeline-item">
+                <div class="timeline-top">
+                  <div>
+                    <div class="timeline-role">前端开发实习</div>
+                    <div class="timeline-company">某互联网公司</div>
+                  </div>
+                  <div class="timeline-time">2021.06 - 2022.02</div>
+                </div>
+                <div class="timeline-desc">
+                  协助完成活动落地页、移动端 H5 页面，对接后端接口，修复线上 bug，参与产品迭代。
+                </div>
+                <div class="timeline-tag-row">
+                  <span class="mini-tag">Vue</span>
+                  <span class="mini-tag">H5</span>
+                  <span class="mini-tag">业务落地</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Projects -->
+          <div id="projects" class="card">
+            <div class="section-subtitle" style="margin-bottom: 10px;">个人项目</div>
+            <div class="projects-grid">
+              <a class="project-item" href="#" target="_blank" rel="noreferrer">
+                <div class="project-top">
+                  <div class="project-name">个人博客平台</div>
+                  <div class="project-link">
+                    查看项目
+                    <span>↗</span>
+                  </div>
+                </div>
+                <div class="project-desc">
+                  使用 React + Next.js 搭建的个人博客，支持 Markdown 编辑、标签分类与暗色模式。
+                </div>
+                <div class="timeline-tag-row">
+                  <span class="mini-tag">Next.js</span>
+                  <span class="mini-tag">TailwindCSS</span>
+                  <span class="mini-tag">SSR</span>
+                </div>
+              </a>
+
+              <a class="project-item" href="#" target="_blank" rel="noreferrer">
+                <div class="project-top">
+                  <div class="project-name">组件库 Demo</div>
+                  <div class="project-link">
+                    GitHub
+                    <span>↗</span>
+                  </div>
+                </div>
+                <div class="project-desc">
+                  尝试从零搭建一个基础组件库，包括按钮、表单、弹窗等，支持主题定制与文档网站。
+                </div>
+                <div class="timeline-tag-row">
+                  <span class="mini-tag">Storybook</span>
+                  <span class="mini-tag">Rollup</span>
+                  <span class="mini-tag">组件设计</span>
+                </div>
+              </a>
+
+              <a class="project-item" href="#" target="_blank" rel="noreferrer">
+                <div class="project-top">
+                  <div class="project-name">数据可视化看板</div>
+                  <div class="project-link">
+                    Demo
+                    <span>↗</span>
+                  </div>
+                </div>
+                <div class="project-desc">
+                  为内部运营团队制作的可视化看板，实现多维度筛选、图表联动与导出功能。
+                </div>
+                <div class="timeline-tag-row">
+                  <span class="mini-tag">ECharts</span>
+                  <span class="mini-tag">React</span>
+                  <span class="mini-tag">Dashboard</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="bar"></span>
+            联系方式
+          </h2>
+          <div class="section-subtitle">Let’s get in touch</div>
+        </div>
+        <div class="card">
+          <div class="contact-body">
+            如果你正在寻找一位注重体验、愿意持续学习的前端工程师，欢迎通过下面的方式联系我。
+            也非常乐意与设计 / 产品 / 技术同学一起交流。
+          </div>
+          <div class="contact-grid">
+            <div class="contact-list">
+              <div class="contact-item">
+                <div class="contact-label">邮箱</div>
+                <div class="contact-value">
+                  <a href="mailto:your@email.com">your@email.com</a>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-label">手机</div>
+                <div class="contact-value">138-0000-0000</div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-label">所在地</div>
+                <div class="contact-value">上海 · 可接受远程 / 异地</div>
+              </div>
+            </div>
+            <div class="contact-social">
+              <a class="social-pill" href="#" target="_blank" rel="noreferrer">
+                GitHub
+              </a>
+              <a class="social-pill" href="#" target="_blank" rel="noreferrer">
+                LinkedIn
+              </a>
+              <span class="social-pill">
+                WeChat：your_wechat_id
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      © <span id="year"></span> 张三 · Personal Site. Crafted with ♥ &amp; Code.
+    </footer>
+  </div>
+
+  <script>
+    // 自动填充年份
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
