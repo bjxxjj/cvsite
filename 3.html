@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Experience Design</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    /* 整个页面的基础样式 */
+    body {
+      margin: 0;
+      font-family: "Helvetica Neue", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: white;
+      background: black;
+    }
+
+    /* 顶部整块区域（全屏） */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;          /* 高度 = 一屏高度 */
+      overflow: hidden;
+    }
+
+    /* 背景视频 */
+    .bg-video {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;      /* 拉伸裁剪填满 */
+      top: 0;
+      left: 0;
+      filter: brightness(65%);
+    }
+
+    /* 中间文字内容 */
+    .hero-content {
+      position: relative;     /* 让它在视频上面 */
+      z-index: 2;
+      padding: 20vh 10vw;     /* 上下左右的间距 */
+      max-width: 900px;
+    }
+
+    .hero-title {
+      font-size: 2.6rem;
+      line-height: 1.35;
+      font-weight: 300;
+    }
+
+    /* 邮箱行 */
+    .email {
+      margin-top: 32px;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .email .dot {
+      width: 10px;
+      height: 10px;
+      background: #ff3a2e;   /* 红色小圆点 */
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    /* 适配手机等小屏幕 */
+    @media (max-width: 768px) {
+      .hero {
+        height: 100vh;
+      }
+
+      .hero-content {
+        padding: 18vh 7vw;
+      }
+
+      .hero-title {
+        font-size: 1.7rem;
+      }
+
+      .email {
+        font-size: 0.95rem;
+      }
+    }
+        /* ---------- 第二屏 About 区块 ---------- */
+
+    .about-section {
+      position: relative;
+      margin-top: -60px;          /* 往上顶一点，产生“白卡片盖住视频”的感觉 */
+      padding: 0 6vw 80px;        /* 左右留点空白，下面留一点空间 */
+    }
+
+    .about-card {
+      background: #ffffff;
+      color: #000000;
+      border-radius: 40px 40px 0 0;   /* 只把上边角弄圆 */
+      padding: 60px 5vw;
+      display: flex;
+      gap: 60px;
+      align-items: flex-start;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .about-image-wrap {
+      flex: 0 0 40%;              /* 左边大约占 40% 宽度 */
+    }
+
+    .about-image {
+      width: 100%;
+      display: block;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .about-text {
+      flex: 1;
+      font-size: 0.98rem;
+      line-height: 1.7;
+    }
+
+    .about-title {
+      font-size: 2.2rem;
+      margin: 12px 0 24px;
+      font-weight: 400;
+    }
+
+    .about-text p {
+      margin: 0 0 16px;
+    }
+
+    /* 手机等小屏幕时改成上下布局 */
+    @media (max-width: 900px) {
+      .about-card {
+        flex-direction: column;
+        padding: 40px 8vw 50px;
+        border-radius: 32px 32px 0 0;
+      }
+
+      .about-image-wrap {
+        flex: none;
+      }
+
+      .about-title {
+        font-size: 1.8rem;
+      }
+    }
+    /* ===== Short CV 区块 ===== */
+
+    .cv-section {
+      padding: 60px 6vw 100px;
+      background: #000;              /* 整体黑底 */
+    }
+
+    .cv-card {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #050505;
+      border-radius: 40px;
+      padding: 70px 6vw 80px;
+      overflow: hidden;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+      min-height: 420px;
+    }
+
+    /* 每一张卡片（一个 slide） */
+    .cv-slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      gap: 60px;
+      padding: 70px 6vw 80px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    /* 当前显示的那一张 */
+    .cv-slide-active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .cv-left {
+      flex: 1.1;
+      color: #ffffff;
+      font-size: 0.98rem;
+      line-height: 1.7;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .cv-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cv-title {
+      font-size: 2.3rem;
+      margin: 0 0 26px;
+      font-weight: 400;
+    }
+
+    .cv-subtitle {
+      margin: 0 0 18px;
+      opacity: 0.85;
+    }
+
+    .cv-highlight {
+      margin: 0 0 18px;
+      color: #ff3a2e; /* 红色强调 */
+    }
+
+    .cv-highlight-blue {
+      color: #2962ff; /* 蓝色强调，用于 eBay */
+    }
+
+    .cv-left p {
+      margin: 0 0 14px;
+    }
+
+    .cv-image {
+      width: 100%;
+      max-width: 460px;
+      border-radius: 24px;
+      display: block;
+      object-fit: cover;
+    }
+
+    .cv-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 26px;
+      padding: 10px 26px;
+      border-radius: 999px;
+      border: 1px solid #ffffff;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 0.95rem;
+      letter-spacing: 0.02em;
+    }
+
+    .cv-button:hover {
+      background: #ffffff;
+      color: #000000;
+    }
+
+    /* 底部切换小圆点 */
+    .cv-dots {
+      position: absolute;
+      left: 6vw;
+      bottom: 26px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .cv-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1px solid #ffffff;
+      background: transparent;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .cv-dot-active {
+      background: #ffffff;
+    }
+
+    /* 响应式：手机、平板改为上下布局 */
+
+    @media (max-width: 900px) {
+      .cv-card {
+        padding: 50px 6vw 70px;
+        border-radius: 32px;
+      }
+
+      .cv-slide {
+        padding: 50px 6vw 70px;
+        flex-direction: column;
+        gap: 30px;
+      }
+
+      .cv-title {
+        font-size: 1.9rem;
+      }
+
+      .cv-dots {
+        left: 6vw;
+        bottom: 20px;
+      }
+
+      .cv-image {
+        max-width: 100%;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+  <section class="hero">
+    <!-- 背景视频：用你给的链接 -->
+    <video autoplay muted loop playsinline class="bg-video">
+      <source src="https://video.wixstatic.com/video/30d9fa_35b9ab38abbc43399599d0f8d01f344d/720p/mp4/file.mp4" type="video/mp4">
+      您的浏览器不支持视频标签。
+    </video>
+
+    <!-- 前景文字内容 -->
+    <div class="hero-content">
+      <h1 class="hero-title">
+        市场运营<br>
+        擅长趋势洞察、用户增长与内容策略<br>
+        具备敏锐市场嗅觉，熟悉互联网/Web3/游戏生态<br>
+        多次0到1的项目经历
+      </h1>
+
+      <div class="email">
+        <span class="dot"></span>
+        jianhaox342@gmail.com
+      </div>
+    </div>
+  </section>
+
+  <!-- 下面是新增的 About 区块 -->
+  <section class="about-section">
+    <div class="about-card">
+      <!-- 左侧图片 -->
+      <div class="about-image-wrap">
+        <img
+          src="头像.jpg"
+          alt="XIE"
+          class="about-image"
+        >
+      </div>
+
+      <!-- 右侧文字 -->
+      <div class="about-text">
+        <h2 class="about-title">Crypto N</h2>
+        <p>
+          我是一个拥有4年工作经验的市场运营，曾做过三个月0市场费用数百万营收的创业项目市场负责人、领域内Top2抽奖平台独立市场运营
+        </p>
+        <p>
+          同时对传统AI或游戏行业感兴趣，目前是国内首个AI小镇类型游戏的市场运营，曾负责市场策略、海外产品投流
+        </p>
+        <p>
+          目前还在探索Vibe coding相关的市场前沿内容，能用各种AI coding工具做一些小应用
+        </p>
+      </div>
+    </div>
+  </section>
+    <!-- ===== Short CV 区块（黑色可切换卡片） ===== -->
+  <section class="cv-section">
+    <div class="cv-card">
+      <!-- 第 1 张卡片：Short CV 文案 + 右侧图 -->
+      <div class="cv-slide cv-slide-active" data-slide="1">
+        <div class="cv-left">
+          <h2 class="cv-title">Short CV</h2>
+          <p>
+            With a strategic brand and digital product development background,
+            Melanie embodies design leadership, having collaborated with global
+            brands, startups, agencies and the most talented technologists and
+            freelance creatives.
+          </p>
+          <p>
+            Find regular updates and work in progress on Melanie's LinkedIn
+            profile.
+          </p>
+
+          <a href="#" class="cv-button" target="_blank">
+            LinkedIn CV
+          </a>
+        </div>
+
+        <div class="cv-right">
+          <img src="cv1.jpg" alt="Short CV Artwork" class="cv-image">
+        </div>
+      </div>
+
+      <!-- 第 2 张卡片：Nothing 公司 -->
+      <div class="cv-slide" data-slide="2">
+        <div class="cv-left">
+          <h2 class="cv-title">Nothing</h2>
+          <p class="cv-subtitle">
+            Experience Design, Industrial Design Team / London
+          </p>
+          <p class="cv-highlight">
+            “Designing smart products that people love to interact with – every
+            moment, every day.”
+          </p>
+          <p>
+            Focusing on crafting cohesive experiences that blend physical
+            products and digital interfaces into one fluent, human-centered
+            journey.
+          </p>
+        </div>
+
+        <div class="cv-right">
+          <img src="cv2.jpg" alt="Nothing Project" class="cv-image">
+        </div>
+      </div>
+
+      <!-- 第 3 张卡片：eBay -->
+      <div class="cv-slide" data-slide="3">
+        <div class="cv-left">
+          <h2 class="cv-title">eBay</h2>
+          <p class="cv-subtitle">
+            Product Management &amp; User Experience Strategy / Berlin
+          </p>
+          <p class="cv-highlight cv-highlight-blue">
+            “Holistic experiences and human-centred strategies drive the
+            engagement and trust of users in a thriving loyalty and rewards
+            program.”
+          </p>
+          <p>
+            Enabling agile collaboration between engineering, business and
+            marketing teams to drive the Ebay Plus loyalty and rewards program.
+          </p>
+        </div>
+
+        <div class="cv-right">
+          <img src="cv3.jpg" alt="eBay Project" class="cv-image">
+        </div>
+      </div>
+
+      <!-- 底部切换小圆点 -->
+      <div class="cv-dots">
+        <button class="cv-dot cv-dot-active" data-target="1"></button>
+        <button class="cv-dot" data-target="2"></button>
+        <button class="cv-dot" data-target="3"></button>
+      </div>
+    </div>
+  </section>
+  <script>
+    // 简单的三个卡片切换逻辑
+    const cvDots = document.querySelectorAll('.cv-dot');
+    const cvSlides = document.querySelectorAll('.cv-slide');
+
+    cvDots.forEach(function(dot) {
+      dot.addEventListener('click', function () {
+        const target = this.getAttribute('data-target');
+
+        // 移除所有 slide 的激活状态
+        cvSlides.forEach(function (slide) {
+          slide.classList.remove('cv-slide-active');
+        });
+
+        // 移除所有小圆点的激活状态
+        cvDots.forEach(function (d) {
+          d.classList.remove('cv-dot-active');
+        });
+
+        // 给对应的 slide 和 dot 加上激活 class
+        document.querySelector('.cv-slide[data-slide="' + target + '"]')
+          .classList.add('cv-slide-active');
+        this.classList.add('cv-dot-active');
+      });
+    });
+  </script>
+</body>
+</html>
+
