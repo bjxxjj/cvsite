@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Experience Design</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    /* 整个页面的基础样式 */
+    body {
+      margin: 0;
+      font-family: "Helvetica Neue", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: white;
+      background: black;
+    }
+
+    /* 顶部整块区域（全屏） */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      /* 高度 = 一屏高度 */
+      overflow: hidden;
+    }
+
+    /* 背景视频 */
+    .bg-video {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      /* 拉伸裁剪填满 */
+      top: 0;
+      left: 0;
+      filter: brightness(65%);
+    }
+
+    /* 中间文字内容 */
+    .hero-content {
+      position: relative;
+      /* 让它在视频上面 */
+      z-index: 2;
+      padding: 20vh 10vw;
+      /* 上下左右的间距 */
+      max-width: 900px;
+    }
+
+    .hero-title {
+      font-size: 2.6rem;
+      line-height: 1.35;
+      font-weight: 300;
+    }
+
+    /* 邮箱行 */
+    .email {
+      margin-top: 32px;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .email .dot {
+      width: 10px;
+      height: 10px;
+      background: #ff3a2e;
+      /* 红色小圆点 */
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    /* 适配手机等小屏幕 */
+    @media (max-width: 768px) {
+      .hero {
+        height: 100vh;
+      }
+
+      .hero-content {
+        padding: 18vh 7vw;
+      }
+
+      .hero-title {
+        font-size: 1.7rem;
+      }
+
+      .email {
+        font-size: 0.95rem;
+      }
+    }
+
+    /* ---------- 第二屏 About 区块 ---------- */
+
+    .about-section {
+      position: relative;
+      margin-top: -60px;
+      /* 往上顶一点，产生“白卡片盖住视频”的感觉 */
+      padding: 0 6vw 80px;
+      /* 左右留点空白，下面留一点空间 */
+    }
+
+    .about-card {
+      background: #ffffff;
+      color: #000000;
+      border-radius: 40px 40px 0 0;
+      /* 只把上边角弄圆 */
+      padding: 60px 5vw;
+      display: flex;
+      gap: 60px;
+      align-items: flex-start;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .about-image-wrap {
+      flex: 0 0 40%;
+      /* 左边大约占 40% 宽度 */
+    }
+
+    .about-image {
+      width: 100%;
+      display: block;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .about-text {
+      flex: 1;
+      font-size: 0.98rem;
+      line-height: 1.7;
+    }
+
+    .about-title {
+      font-size: 2.2rem;
+      margin: 12px 0 24px;
+      font-weight: 400;
+    }
+
+    .about-text p {
+      margin: 0 0 16px;
+    }
+
+    /* 手机等小屏幕时改成上下布局 */
+    @media (max-width: 900px) {
+      .about-card {
+        flex-direction: column;
+        padding: 40px 8vw 50px;
+        border-radius: 32px 32px 0 0;
+      }
+
+      .about-image-wrap {
+        flex: none;
+      }
+
+      .about-title {
+        font-size: 1.8rem;
+      }
+    }
+
+
+    :root {
+      --cv-offset: 80px;
+      /* 卡片距离视口顶部的间距，想高一点就改大 */
+    }
+
+    /* ===== Short CV 区块：多张卡片滚动覆盖 ===== */
+
+    .cv-section {
+      padding: 80px 6vw 200px;
+      background: url("bg-cv.jpg") center center no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+      /* 花纹背景固定不动 */
+      position: relative;
+    }
+
+    /* 包住所有卡片的容器 */
+    .cv-card-stack {
+      position: relative;
+      max-width: 2000px;
+      margin: 0 auto;
+    }
+
+    /* 每一张卡片 */
+    .cv-card {
+      position: sticky;
+      top: 80px;
+      /* ✅ 卡片从视口顶部开始贴住 */
+      min-height: 100vh;
+      /* ✅ 关键：至少一整屏高，自动盖到页面底部 */
+      box-sizing: border-box;
+      /* ✅ padding 也算在高度里，避免撑爆布局 */
+
+      margin-bottom: 0;
+      /* 不再手动加间隔，间隔由“每张卡片自己一屏高”决定 */
+      padding: 80px 6vw 80px;
+      /* 内边距用来腾出内容空间 */
+      border-radius: 40px;
+      background: #050505;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+      display: flex;
+      gap: 60px;
+      align-items: center;
+      color: #ffffff;
+    }
+
+
+    /* 让后出现的卡片覆盖前面的卡片 */
+    .cv-card-1 {
+      z-index: 1;
+    }
+
+    .cv-card-2 {
+      z-index: 2;
+    }
+
+    .cv-card-3 {
+      z-index: 3;
+    }
+
+    /* 左右两块内容 */
+    .cv-card-left {
+      flex: 0 0 38%;
+      max-width: 420px;
+      font-size: 0.98rem;
+      line-height: 1.7;
+    }
+
+    .cv-card-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-left: 40px;
+    }
+
+
+    /* 第一张卡片整体：竖向布局，上面文字 / 下面视频 */
+    .cv-card-1 {
+      display: flex;
+      flex-direction: column;
+      /* 纵向排布 */
+      align-items: stretch;
+      /* 左右拉满 */
+      padding: 48px 6vw 48px;
+      /* 全局 padding 比原来稍微小一点 */
+    }
+
+    /* 文字块：高度别太夸张，压缩 padding */
+    .cv-card-1 .cv-card-left {
+      position: relative;
+      width: 100%;
+      max-width: 960px;
+      /* 控制文字行宽，不要太宽 */
+      padding: 24px 28px;
+      /* 比原来 40px 更精简 */
+      border-radius: 24px;
+      margin-bottom: 24px;
+      /* 和视频之间的间距 */
+      flex: 0 0 auto;
+      /* 只占自身需要的高度 */
+      box-sizing: border-box;
+    }
+
+    /* 让 AIvilization 这块文字居中并变大 */
+    .cv-card-1 .cv-card-left {
+      text-align: start;
+      /* 水平居中文字 */
+      display: flex;
+      /* 用 flex 布局 */
+      flex-direction: column;
+      /* 从上到下排布 */
+      align-items: center;
+      /* 居中对齐 */
+      margin: 0 auto 24px;
+      /* 整块居中 */
+    }
+
+    /* 标题变大 */
+    .cv-card-1 .cv-title {
+      font-size: 3rem;
+      /* 可以改成 2.6 / 3.2 自己试 */
+      font-weight: 400;
+    }
+
+    /* 正文变大，行距更舒服 */
+    .cv-card-1 .cv-card-left p {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      max-width: 720px;
+      /* 控制文字宽度，读起来更舒服 */
+      margin: 0 auto 14px;
+    }
+
+    /* 文字背景图继续保留 */
+    .cv-card-1 .cv-card-left::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("aivilization-bg.jpg") center center no-repeat;
+      background-size: cover;
+      opacity: 0.25;
+      pointer-events: none;
+    }
+
+    .cv-card-1 .cv-card-left>* {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 视频区域占满剩余高度，让视频看起来更“巨幕” */
+    .cv-card-1 .cv-card-right {
+      margin-top: 0;
+      width: 100%;
+      flex: 1 1 auto;
+      /* 吃掉剩余空间 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-left: 0;
+    }
+
+    .cv-card-1 .cv-card-right video {
+      width: 100%;
+      height: 100%;
+      max-width: 960px;
+      /* 你可以根据页面宽度调整 */
+      border-radius: 24px;
+      object-fit: cover;
+      /* 填满容器 */
+    }
+
+    /* 小屏幕下略微收紧一点，避免视频太高不好滚动 */
+    @media (max-width: 900px) {
+      .cv-card-1 {
+        padding: 36px 7vw 40px;
+      }
+
+      .cv-card-1 .cv-card-left {
+        padding: 20px 18px;
+        margin-bottom: 18px;
+      }
+
+      .cv-card-1 .cv-card-right {
+        flex: 0 0 auto;
+        /* 移动端取消“占满剩余高度”，自然按内容高度 */
+      }
+
+      .cv-card-1 .cv-card-right video {
+        height: auto;
+        max-width: 100%;
+      }
+    }
+
+
+    /* 小屏幕下略微收紧间距（可选） */
+    @media (max-width: 900px) {
+      .cv-card-1 .cv-card-left {
+        padding: 28px 22px;
+        border-radius: 24px;
+      }
+
+      .cv-card-1 .cv-card-right {
+        margin-top: 24px;
+      }
+    }
+
+    .cv-card-right img,
+    .cv-card-right video {
+      width: 100%;
+      max-width: 460px;
+      border-radius: 24px;
+      display: block;
+      object-fit: cover;
+    }
+
+    /* 标题、文案、按钮样式（沿用你原来的） */
+    .cv-title {
+      font-size: 2.3rem;
+      margin: 0 0 26px;
+      font-weight: 400;
+    }
+
+    .cv-card-left p {
+      margin: 0 0 14px;
+    }
+
+    .cv-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 26px;
+      padding: 10px 26px;
+      border-radius: 999px;
+      border: 1px solid #ffffff;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 0.95rem;
+      letter-spacing: 0.02em;
+    }
+
+    .cv-button:hover {
+      background: #ffffff;
+      color: #000000;
+    }
+
+    /* 手机端：卡片改成上下排布，取消 sticky，体验更自然 */
+    @media (max-width: 900px) {
+      .cv-section {
+        padding: 60px 4vw 120px;
+      }
+
+      .cv-card {
+        position: static;
+        /* 小屏幕不要粘住 */
+        margin-bottom: 40px;
+        padding: 40px 7vw 50px;
+        border-radius: 32px;
+        flex-direction: column;
+        gap: 30px;
+      }
+
+      .cv-card-right {
+        padding-left: 0;
+      }
+
+      .cv-title {
+        font-size: 1.9rem;
+      }
+    }
+
+
+    /* ===== Contact 全屏视频区块 ===== */
+
+
+    .contact-section {
+      position: relative;
+      height: 140vh;
+      /* 给一点多余高度，让滚动时有“覆盖”感 */
+      background: #000;
+      margin-top: 0;
+    }
+
+
+
+
+
+
+
+    /* 进入这一块后贴在视口顶部，看起来像整页被新内容盖住 */
+    .contact-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+
+
+    .contact-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(60%);
+    }
+
+    .contact-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.6));
+      pointer-events: none;
+    }
+
+    .contact-content {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 18vh 10vw 14vh;
+      color: #ffffff;
+    }
+
+    .contact-title {
+      font-size: 2.8rem;
+      line-height: 1.25;
+      font-weight: 300;
+      margin: 0 0 36px;
+      max-width: 960px;
+    }
+
+    .contact-email {
+      font-size: 2rem;
+      margin: 0 0 36px;
+      font-weight: 300;
+    }
+
+    .contact-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+
+    .outline-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 32px;
+      border-radius: 999px;
+      border: 1px solid #ffffff;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 0.98rem;
+      letter-spacing: 0.03em;
+    }
+
+    .outline-btn:hover {
+      background: #ffffff;
+      color: #000000;
+    }
+
+    /* 手机、平板上的适配 */
+    @media (max-width: 900px) {
+      .contact-section {
+        height: 120vh;
+      }
+
+      .contact-content {
+        padding: 16vh 7vw 12vh;
+      }
+
+      .contact-title {
+        font-size: 2rem;
+      }
+
+      .contact-email {
+        font-size: 1.4rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <section class="hero">
+    <!-- 背景视频：用你给的链接 -->
+    <video autoplay muted loop playsinline class="bg-video">
+      <source src="https://video.wixstatic.com/video/30d9fa_35b9ab38abbc43399599d0f8d01f344d/720p/mp4/file.mp4"
+        type="video/mp4">
+      您的浏览器不支持视频标签。
+    </video>
+
+    <!-- 前景文字内容 -->
+    <div class="hero-content">
+      <h1 class="hero-title">
+        市场运营<br>
+        擅长趋势洞察、用户增长与内容策略<br>
+        具备敏锐市场嗅觉，熟悉互联网/Web3/游戏生态<br>
+        多次0到1的项目经历
+      </h1>
+
+      <div class="email">
+        <span class="dot"></span>
+        jianhaox342@gmail.com
+      </div>
+    </div>
+  </section>
+
+  <!-- 下面是新增的 About 区块 -->
+  <section class="about-section">
+    <div class="about-card">
+      <!-- 左侧图片 -->
+      <div class="about-image-wrap">
+        <img src="头像.jpg" alt="XIE" class="about-image">
+      </div>
+
+      <!-- 右侧文字 -->
+      <div class="about-text">
+        <h2 class="about-title">Crypto N</h2>
+        <p>
+          我是一个拥有4年工作经验的市场运营，曾做过三个月0市场费用数百万营收的创业项目市场负责人、领域内Top2抽奖平台独立市场运营
+        </p>
+        <p>
+          同时对传统AI或游戏行业感兴趣，目前是国内首个AI小镇类型游戏的市场运营，曾负责市场策略、海外产品投流
+        </p>
+        <p>
+          目前还在探索Vibe coding相关的市场前沿内容，能用各种AI coding工具做一些小应用
+        </p>
+      </div>
+    </div>
+  </section>
+  <!-- ===== Short CV 区块（黑色可切换卡片） ===== -->
+  <section class="cv-section">
+    <div class="cv-card-stack">
+
+      <!-- 卡片 1：Alvilization -->
+      <article class="cv-card cv-card-1">
+        <div class="cv-card-left">
+          <h2 class="cv-title">AIvilization</h2>
+          <p>
+            AIvilization是全球首个AI小镇游戏，本人在项目主要担任市场运营，上线前负责制定市场策略，上线后负责海外推广
+          </p>
+          <p>
+            从0到1做市场推广，一个月内游戏用户破万，全平台粉丝破万，国内众多AI/游戏行业大KOL和媒体以发文/AMA等形式进行助力
+          </p>
+
+          <a href="#" class="cv-button" target="_blank">
+            Link
+          </a>
+        </div>
+        <div class="cv-card-right">
+          <video class="cv-video" autoplay muted loop playsinline>
+            <source src="aivilization视频.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </article>
+
+      <!-- 卡片 2：另一个项目 -->
+      <article class="cv-card cv-card-2">
+        <div class="cv-card-left">
+          <h2>项目二标题</h2>
+          <p>这里写第二个项目的介绍……</p>
+        </div>
+        <div class="cv-card-right">
+          <img src="./project2.jpg" alt="项目二">
+        </div>
+      </article>
+
+      <!-- 卡片 3：再一个项目 -->
+      <article class="cv-card cv-card-3">
+        <div class="cv-card-left">
+          <h2>项目三标题</h2>
+          <p>这里写第三个项目的介绍……</p>
+        </div>
+        <div class="cv-card-right">
+          <img src="./project3.jpg" alt="项目三">
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+
+  <!-- 最后一屏：全屏视频 Contact 区块 -->
+  <section class="contact-section">
+    <div class="contact-sticky">
+      <video class="contact-video" autoplay muted loop playsinline>
+        <!-- 这里用你想要的背景视频地址 -->
+        <source src="https://video.wixstatic.com/video/30d9fa_35b9ab38abbc43399599d0f8d01f344d/720p/mp4/file.mp4"
+          type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+
+      <div class="contact-overlay"></div>
+
+      <div class="contact-content">
+        <h2 class="contact-title">
+          Connect and define the future interplay of society, technology and art — together.
+        </h2>
+
+        <p class="contact-email">jianhaox342@gmail.com</p>
+
+        <div class="contact-buttons">
+          <a href="#" class="outline-btn">LinkedIn</a>
+          <a href="#" class="outline-btn">Instagram</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</body>
+
+</html>
